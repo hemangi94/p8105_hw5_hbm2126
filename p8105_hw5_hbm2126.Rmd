@@ -63,3 +63,27 @@ tidy_df %>%
   geom_path() + 
   facet_grid(~group)
 ```
+
+## Problem 2
+
+```{r}
+homicides_df = 
+  read_csv("data/homicide-data.csv") %>% 
+  mutate(
+    city_state = str_c(city, ", ", state )
+  )
+```
+
+```{r}
+homicides_df %>% 
+  group_by(city_state) %>% 
+  summarize(
+    total_count = n(),
+    unsolved_count = sum((disposition == "Open/No arrest" | disposition == "Closed without arrest"))
+    )
+```
+
+```{r}
+
+```
+
