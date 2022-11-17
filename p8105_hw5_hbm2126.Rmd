@@ -1,9 +1,11 @@
 ---
 title: "Homework 5"
 author: "Hemangi Modi"
-date: "2022-11-15"
+date: "2022-11-16"
 output: github_document
 ---
+
+Hemangi Modi (UNI: hbm2126)
 
 ```{r setup, include=FALSE}
 library(tidyverse)
@@ -56,7 +58,9 @@ tidy_df =
   select(group, subj = files, week, outcome)
 ```
 
-```{r}
+Below is a plot showing observations on each subject over time. 
+
+```{r plot}
 tidy_df %>% 
   ggplot(aes(x = week, y = outcome, group = subj, color = group)) + 
   geom_point() + 
@@ -119,6 +123,8 @@ prop_each_city
 
 ```
 
+Below is a plot showing the estimates and confidence intervals for each city:
+
 ```{r}
 homicides_plot = 
   prop_each_city %>% 
@@ -172,4 +178,15 @@ sim_results_df_1_to_6 =
   ) %>% 
   unnest(estimate_df_1_to_6)
 ```
+
+```{r}
+power_by_mu_plot_df = 
+  sim_results_df_1_to_6 %>% 
+  mutate(
+    hypothesis_conclusion = case_when(p_value < 0.05 ~ "Reject", p_value >= 0.05 ~ "Fail to Reject")
+  )
+
+```
+
+
 
