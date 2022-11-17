@@ -75,15 +75,61 @@ homicides_df =
 ```
 
 ```{r}
-homicides_df %>% 
+summary_df =
+  homicides_df %>% 
   group_by(city_state) %>% 
   summarize(
     total_count = n(),
     unsolved_count = sum((disposition == "Open/No arrest" | disposition == "Closed without arrest"))
-    )
+  )
+```
+
+```{r}
+balt_df = 
+  summary_df %>% 
+  filter(city_state == "Baltimore, MD")
+  
+prop_test_balt = 
+  prop.test(x = balt_df %>% pull(unsolved_count), n = balt_df %>% pull(total_count)) %>% 
+  broom::tidy() %>% 
+  select(
+    estimate, "CI_lower" = conf.low, "CI_higher" = conf.high
+  )
+
+prop_test_balt
+```
+
+
+```{r}
+prop_each_city = 
+  summary_df %>% 
+  mutate(
+    p_test = map2(unsolved_count, total_count, ~prop.test(.x, .y) %>% broom::tidy())
+  ) %>% 
+  unnest() %>% 
+  select(
+    city_state, estimate, "CI_lower" = conf.low, "CI_higher" = conf.high
+  )
+
+prop_each_city
+
 ```
 
 ```{r}
 
 ```
+
+
+## Problem 3
+
+```{r}
+simulation_fx = function(n = 30, mu, sigma = 5) {
+  simulation_df = 
+    tibble(
+      x = rnorm(n, mean = mu, sd = sigma)
+    )
+  return(simulation_df)
+}
+```
+
 
