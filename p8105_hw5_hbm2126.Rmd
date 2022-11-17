@@ -74,6 +74,10 @@ homicides_df =
   )
 ```
 
+### Describing the dataset
+This dataset contains data on homicides in 50 large U.S cities. There are `r nrow(homicides_df)` observations and 12 columns. Some of the key variables include: the date the homicide was reported, information about the victim (first and last name, race, age, sex), the city, the state, and the state/disposition of the case (whether the case is open or closed and if an arrest was made). 
+
+
 ```{r}
 summary_df =
   homicides_df %>% 
@@ -146,7 +150,7 @@ simulation_fx = function(mu, n = 30, sigma = 5) {
 ```
 
 ```{r}
-simulation_results_df = 
+simulation_results_df_0 = 
   expand_grid(
     mu = 0,
     iter = 1:5000
@@ -155,5 +159,17 @@ simulation_results_df =
     estimates_df = map(mu, simulation_fx)
   ) %>% 
   unnest(estimates_df)
+```
+
+```{r}
+sim_results_df_1_to_6 = 
+  expand_grid(
+    mu = c(1, 2, 3, 4, 5, 6),
+    iter = 1:5000
+  ) %>% 
+  mutate(
+    estimate_df_1_to_6 = map(mu, simulation_fx)
+  ) %>% 
+  unnest(estimate_df_1_to_6)
 ```
 
