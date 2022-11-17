@@ -130,13 +130,30 @@ homicides_plot
 ## Problem 3
 
 ```{r}
-simulation_fx = function(n = 30, mu, sigma = 5) {
+simulation_fx = function(mu, n = 30, sigma = 5) {
   simulation_df = 
     tibble(
       x = rnorm(n, mean = mu, sd = sigma)
     )
-  return(simulation_df)
+
+  simulation_df %>% 
+    summarize (
+      mu_hat = mean(x),
+      p_value = broom::tidy(t.test(x))[[3]] 
+    )
+
 }
 ```
 
+```{r}
+simulation_results_df = 
+  expand_grid(
+    mu = 0,
+    iter = 1:5000
+  ) %>% 
+  mutate(
+    estimates_df = map(mu, simulation_fx)
+  ) %>% 
+  unnest(estimates_df)
+```
 
