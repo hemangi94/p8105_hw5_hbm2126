@@ -116,7 +116,14 @@ prop_each_city
 ```
 
 ```{r}
+homicides_plot = 
+  prop_each_city %>% 
+  ggplot(aes(x = reorder(city_state, estimate), y = estimate)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = CI_lower, ymax = CI_higher)) +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
 
+homicides_plot
 ```
 
 
